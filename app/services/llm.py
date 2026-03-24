@@ -1,0 +1,1 @@
+# idk how you guys wanna do this stuff have fun <3
