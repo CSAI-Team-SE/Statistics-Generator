@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
 
-def get_config():
+def load_env():
     load_dotenv()
     return os.environ

@@ -9,6 +9,7 @@ This is a web application designed for analyzing seismic activity datasets using
 ### Core Technologies
 - **Framework:** [FastAPI](https://fastapi.tiangolo.com/)
 - **Data Analysis:** [Pandas](https://pandas.pydata.org/)
+- **AI Integration:** [Google Gen AI SDK](https://ai.google.dev/gemini-api/docs/text-generation)
 - **Frontend:** Vanilla HTML, CSS, and JavaScript.
 - **Web Server:** [Uvicorn](https://www.uvicorn.org/)
 - **Language:** Python 3.x
@@ -22,7 +23,7 @@ This is a web application designed for analyzing seismic activity datasets using
     - `services/`: Contains the business logic, data processing, and AI integrations.
         - `dataset.py`: Handles data loading and cleaning logic using Pandas.
         - `graph.py`: Manages graph generation and visualization logic.
-        - `llm.py`: Integrates Generative AI models for data analysis.
+        - `llm.py`: Integrates Generative AI models using `async/await`.
     - `core/`: Application configuration and shared dependencies.
         - `config.py`: Environment configuration loader.
     - `static/`: Contains static assets (CSS, JS, images).
@@ -41,6 +42,7 @@ This is a web application designed for analyzing seismic activity datasets using
 ### Prerequisites
 - Python 3.8+
 - Virtual environment (recommended)
+- `GEMINI_API_KEY` environment variable.
 
 ### Installation
 1.  **Clone the repository.**
@@ -74,4 +76,5 @@ The application will be accessible at `http://127.0.0.1:8000`. You can access th
     - Page-specific styles should live in `static/css/pages/`.
     - Base styles and variables should live in `static/css/base.css`.
 - **HTML Layout:** HTML files for each page should reside in the `app/pages/` directory.
-- **Environment Variables:** Configuration should be managed through `app/core/config.py` using `get_config()`.
+- **Environment Variables:** Configuration should be managed through `app/core/config.py` using `load_env()`.
+- **AI Integration:** Use `app/services/llm.py` for AI logic. All LLM calls should be asynchronous.
