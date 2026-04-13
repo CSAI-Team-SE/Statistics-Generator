@@ -2,6 +2,9 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse
 from app.api import home
+from app.core import config
+
+config.load_env()
 
 app = FastAPI(
     title="Seismic Analysis",
