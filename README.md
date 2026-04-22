@@ -24,6 +24,7 @@ This is a web application designed for analyzing seismic activity datasets using
         - `dataset.py`: Handles data loading and cleaning logic using Pandas.
         - `graph.py`: Manages graph generation and visualization logic.
         - `llm.py`: Integrates Generative AI models using `async/await`.
+        - `llm_oh.py`: Standin file for output handling.
     - `core/`: Application configuration and shared dependencies.
         - `config.py`: Environment configuration loader.
     - `static/`: Contains static assets (CSS, JS, images).
