@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make A Graph</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+    <body>
+            <header>
+                <nav>
+                    <div class="nav-left">
+                        <a href="index.html">Home</a>
+                        <a href="graph-input.html">Make a Graph</a>
+                        <a href="help.html">Help</a>
+                    </div>
+
+                    <!--  this will download the csv file -->
+                    <div class="nav-right">
+                        <a href="data.csv" download="data.csv">Download CSV</a>
+                    </div>
+                </nav>
+            </header>
+
+            <!-- main content here -->
+
+            <main class="container">
+
+
+            <section class="card">
+                <h1>Make A Graph</h1>
+                <p>Here is the prompt for the project.</p>
+            
+
+            <!-- -------- GRAPH INPUT SECTION -------- -->
+
+
+            <!-- graph title input -->
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" id="title" placeholder="Enter Text Here">
+            </div>
+
+            <!-- x-axis label and dropdown -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="x-label">X Axis label</label>
+                    <input type="text" id="x-label" placeholder="Enter Text Here">
+            </div>
+
+
+                <div class="form-group">
+                    <label for="x-data">X Axis Data</label>
+                    <select id="x-data">
+                        <option> Select From Dropdown</option>
+                        <option> Option 1</option>
+                        <option> Option 2</option>
+                        <option> Option 3</option>
+                    </select>
+                </div>
+            </div>
+
+        <!-- y axis label and dropdown -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="y-label">Y Axis label</label>
+                    <input type="text" id="y-label" placeholder="Enter Text Here">
+                </div>
+
+                <div class="form-group">
+                    <label for="y-data">Y Axis Data</label>
+                    <select id="y-data">
+                        <option> Select From Dropdown</option>
+                        <option> Option 1</option>
+                        <option> Option 2</option>
+                        <option> Option 3</option>
+                    </select>
+                </div>
+            </div>
+                <!-- graph type below both axis rows -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="graph-type">Graph Type</label>
+                    <select id="graph-type">
+                        <option> Select From Dropdown</option>
+                        <option> Option 1</option>
+                        <option> Option 2</option>
+                        <option> Option 3</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Optional filters section (latitude/longitude) -->
+
+            <section class="card">
+                <h2>Optional Filters</h2>
+
+                    <!-- Latitude between -->
+                     <div class="form-group">
+                        <label> Latitude Between</label>
+                     </div>
+
+                     <div class="form-row">
+                        <div class="form-group">
+                            <label for="lat-high"> High Value</label>
+                            <input id="lat-high" type="text" placeholder="Enter Text Here">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lat-low"> Low Value</label>
+                            <input id="lat-low" type="text" placeholder="Enter Text Here">
+                        </div>
+                     </div>
+
+
+                    
+                     <!-- Longitude between -->
+                    <div class="form-group">
+                        <label> Longitude Between</label>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="long-high"> High Value</label>
+                            <input id="long-high" type="text" placeholder="Enter Text Here">
+                        
+                    </div>
+
+                    <div class="form-group">
+                            <label for="long-low"> Low Value</label>
+                            <input id="long-low" type="text" placeholder="Enter Text Here">
+                        </div>
+                    </div>
+                     
+                <!-- submit button -->
+                <button class="submit-btn">Submit</button>
+            </section>
+
+
+        </main>
+            <!-- <footer>
+                <p>  </p>
+            </footer> -->
+    </body>
+</html>
