@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="nav-left">
+                <a href="index.html">Home</a>
+                <a href="graph-input.html">Make a Graph</a>
+                <a href="help.html">Help</a>
+            </div>
+
+            <!--  this will download the csv file -->
+            <div class="nav-right">
+                <a href="data.csv" download="data.csv">Download CSV</a>
+            </div>
+        </nav>
+    </header>
+
+
+    <main class="container">
+
+
+    <section class="card">
+        <h1>Graph Output</h1>
+
+        <div class="graph-container">
+            <!-- this is a placeholder (no js))-->
+             <canvas id="graph-canvas"></canvas>
+        </div>
+    </section>
+
+
+    <!-- Statistics card  -->
+
+    <section class="card">
+        <h2>Statistics</h2>
+
+<!-- VARIABLE VALUES (template) -->
+        <div class="stats-list">
+            <p><strong>Mean:</strong> VARIABLE</p>
+            <p><strong>Range:</strong> VARIABLE</p>
+            <p><strong>P Value:</strong> VARIABLE</p>
+            <p><strong>Gradient:</strong> VARIABLE</p>
+            <p><strong>IQR:</strong> VARIABLE</p>
+        </div>
+    </section>
+
+    <!-- AI analysis card -->
+
+    <section class="card">
+        <h2>AI Analysis</h2>
+
+
+        <!-- placeholder for the text that will have the real ai generated analysis. -->
+        <p class="analysis-text">
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas, neque?</p>
+        </p>
+
+        <div class="form-group">
+            <label for="question">Further Questions</label>
+            <input type="text" id="question" placeholder="Enter question">
+            <button class="submit-btn">Submit</button>
+        </div>
+    </section>
+</main>
+
+</body>
+</html>
