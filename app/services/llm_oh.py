@@ -8,6 +8,8 @@
 ## work done by Harry                                                               ##
 ######################################################################################
 
+import re
+
 # array of words that probably shouldn't be printed and explanations
 # additionally, phrases could be added if something keeps appearing during testing
 # that we dont like
@@ -19,7 +21,11 @@ avoid_words = [
     " crap", # they'd never be returned by an ai as it'd have its own handling
 
     " bomb", # might be returned if a user asks about what might cause seismic activity
-    " nuclear bomb" # could be helpful or make the prompting a little fear mongering
+    " nuclear bomb", # could be helpful or make the prompting a little fear mongering
+
+    " certain to happen",
+    " guaranteed destruction",
+    " mass casualities"
 ]
 
 def check_appropriate(response):
@@ -28,10 +34,35 @@ def check_appropriate(response):
     # output: bool(true for passing, false for contains bad language)
 
     passing = True # assume its the cleaning done by the api is sufficient
+
     for phrase in avoid_words:
-        if phrase in response:
+        if phrase.lower() in response.lower():
+            # this could be immediately returned if its one strike and your out
+            # or adjusted to count/log issues
             passing = False
     
+    return passing
+
+def sense_check(response):
+    # checks for sensibility for depth or magnitude
+    # input: response(string, assumed)
+    # output: bool(true for passing, false for contains bad language)
+
+    passing = True
+
+    # finds where magnitude (number) is mentioned
+    mags = re.findall(r"[Mm]agnitude\s*(\d+(\.\d+)?)", response)
+    for m in mags:
+        mag = float(m[0])
+        if mag< 0 or mag > 10:
+            passing = False
+    
+    depths = re.findall(r"(\d+)\s*km\s*deep", response)
+    for d in depths:
+        depth = float(m[0])
+        if depth< 0 or depth > 1000: # 1000km feels excessive but a quick guess at a silly number
+            passing = False
+
     return passing
 
 def formatting(response):
@@ -55,7 +86,7 @@ def main_flow(response):
     ## output:
     
     # clean the response
-    valid = check_appropriate(response)
+    valid = check_appropriate(response) and sense_check(response)
 
     # reprompt if inappropriate, or no response
     if (not valid) or (response == "No response generated."):
