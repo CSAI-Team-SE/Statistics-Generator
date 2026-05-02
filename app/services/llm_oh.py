@@ -59,7 +59,7 @@ def sense_check(response):
     
     depths = re.findall(r"(\d+)\s*km\s*deep", response)
     for d in depths:
-        depth = float(m[0])
+        depth = int(d)
         if depth< 0 or depth > 1000: # 1000km feels excessive but a quick guess at a silly number
             passing = False
 
