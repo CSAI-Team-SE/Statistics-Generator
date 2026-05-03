@@ -1,0 +1,27 @@
+/* Help Page Styles */
+
+/* .HelpPage-Image {
+    /* margin: 20px 0;
+    float:left; */
+ 
+.HelpPage-Image img {
+    width: 500px;
+    height: auto;
+    display: block;
+
+}
+
+.container {
+    max-width: 950px;
+    margin: 20px auto;
+    padding-bottom: 80px
+}
+
+
+.card {
+    background-color: white;
+    padding: 5px 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

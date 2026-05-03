@@ -1,13 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Seismic Analysis</title>
-    <link rel="stylesheet" href="/static/css/base.css">
-    <link rel="stylesheet" href="/static/css/pages/home.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page</title>
+    <link rel="stylesheet" href="../static/css/base.css">
+    <link rel="stylesheet" href="../static/css/pages/home.css">
 </head>
+
 <body>
-    <h1>Home</h1>
-    <p>AI Powered Seismic Activity Dataset Analysis</p>
-    <script type="module" src="/static/js/pages/home.js"></script>
+    <header>
+        <nav>
+            <div class="nav-left">
+                <a href="/home">Home</a>
+                <a href="/graph-input">Make a Graph</a>
+                <a href="/help">Help</a>
+
+                <!-- this is the graph output/results page. -->
+                <!-- <a href="/graph-output">Graph Output</a> -->
+            </div>
+
+            <!--  this will download the csv file -->
+            <div class="nav-right">
+                <a href="../static/data/earthquake_data.csv" download="data.csv">Download CSV</a>
+            </div>
+        </nav>
+    </header>
+
+
+    <main class="container">
+        <section class="card">
+
+    <div class="homepage-welcome">
+        <h1>Welcome!</h1>
+    </div>
+
+    <div class="homepage-paragraph">
+        <p>This website allows you to create graphs from our csv file about tsunamis and earthquakes. </p>
+        <p>Please click the Make a Graph button on the navigation bar to get started, or the help button if you need instructions.</p>
+
+    <footer>
+        <p>  </p>
+    </footer>
+        </section>
+
 </body>
 </html>
