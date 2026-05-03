@@ -3,3 +3,4 @@ uvicorn
 python-dotenv
 pandas
 google-genai
+scipy.stats
