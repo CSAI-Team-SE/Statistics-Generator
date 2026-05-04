@@ -139,29 +139,3 @@ async def stream_prompt(prompt_text: str, data_context: str | None = None, previ
 
         for error in potential_errors:
             yield f"- {error}\n"
-
-
-
-if __name__ == "__main__":
-    # Executing an async function doesn't work in the same way as executing a synchronous function.
-    # Calling `async def blah()` returns a coroutine object, you must have an event loop execute it in a particular way.
-    # From inside an async function,
-    #     there must already be an event loop, you can use `await` before calling another async function
-    #     to yield control of the thread until the async function completes.
-    # From inside a synchronous function,
-    #     `asyncio.run(prompt("blah blah"))` aka `asyncio.run(<coroutine object prompt at 0x000001CC96CA7760>)`
-    #     spawns an event loop and executes the coroutine object/async function call.
-    # There are other things asyncio can do, such as executing async code without waiting, but these examples are most relevant.
-    # You can simply call `await prompt(prompt_text)` when inside the body of an async function.
-    import asyncio
-
-    # default prompt asking for description
-    response = asyncio.run(prompt("Tell me about this model"))
-    print(response) # assumed this would then be used as an endpoint so removed it temp
-    
-
-
-
-
-
-
