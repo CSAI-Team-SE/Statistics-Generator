@@ -1,6 +1,33 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
-    margin: 0;
+/* -------------------------------------------------------- */
+.homepage-welcome {
+    font-size: 24px;
+    color: rgb(0, 0, 0);
+    padding: 5px 15px;
+    margin: auto;
+    display: grid;
+    justify-items: center;
+}
+
+.homepage-paragraph {
+    font-size: 24px;
+    color: rgb(0, 0, 0);
+    padding: 20px;
+    display: grid;
+    justify-items: center;
+
+}
+
+.container {
+    max-width: 950px;
+    margin: 20px auto;
+    padding-bottom: 80px
+}
+
+
+.card {
+    background-color: white;
+    padding: 3px 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
