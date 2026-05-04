@@ -87,6 +87,7 @@ if __name__ == "__main__":
 
     # default prompt asking for description
     response = asyncio.run(prompt("Tell me about this model"))
+    print(response) # assumed this would then be used as an endpoint so removed it temp
     
 
 
