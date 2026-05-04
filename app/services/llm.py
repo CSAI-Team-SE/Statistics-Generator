@@ -63,6 +63,11 @@ async def prompt(prompt_text: str) -> str:
             if rating.probability > SAFETY_THRESHOLD:
                 print(f"Safety Category exceeded: {rating.category}")
                 return "No Response Generated"
+            
+    potential_errors = sense_check(response.text)
+
+    if potential_errors:
+        return f"{response.text} \n\n Potential errors where found in this prompt, please take mind of them: {potential_errors}"
 
     # Take the text component or default if not provided.
     return response.text or "No response generated."
