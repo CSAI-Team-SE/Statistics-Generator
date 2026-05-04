@@ -10,8 +10,6 @@ import numpy as np
 # import clean dataset
 from app.services.dataset import load_cleaned
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 # special graph options
 SPECIAL_GRAPHS = {
     "quakes_per_year",
@@ -27,13 +25,6 @@ def check_filter(low, high):
     if not low or not high:
         return None
     return float(low), float(high)
-=======
-=======
->>>>>>> Stashed changes
-# Decompose graph generation logic and call subprocedures inside generate()
-def generate_image(dataset: pd.DataFrame): # -> base64 encoded image?
-    return # graph
->>>>>>> Stashed changes
 
 # find statistics
 def compute_stats(dataset, x_data, y_data):
