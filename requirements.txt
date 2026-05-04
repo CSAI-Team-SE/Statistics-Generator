@@ -4,9 +4,13 @@ python-dotenv
 pandas
 google-genai
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 scipy
 numpy
 matplotlib
+=======
+scipy
+>>>>>>> Stashed changes
 =======
 scipy
 >>>>>>> Stashed changes

@@ -11,6 +11,7 @@ import numpy as np
 from app.services.dataset import load_cleaned
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 # special graph options
 SPECIAL_GRAPHS = {
     "quakes_per_year",
@@ -27,6 +28,8 @@ def check_filter(low, high):
         return None
     return float(low), float(high)
 =======
+=======
+>>>>>>> Stashed changes
 # Decompose graph generation logic and call subprocedures inside generate()
 def generate_image(dataset: pd.DataFrame): # -> base64 encoded image?
     return # graph
