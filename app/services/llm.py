@@ -9,6 +9,16 @@ from app.core import config
 
 config.load_env()
 
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY") # get the Gemini API key from the environment variable, which should be set in a .env file in the project root (see instructions in the error message below)
+
+if not GEMINI_API_KEY: # if the API key is not set in the environment variable, raise an error with instructions on how to set it
+    raise RuntimeError(
+        "GEMINI_API_KEY is missing. Create a .env file in the project root "
+        "and add GEMINI_API_KEY=your-api-key-here."
+    )
+
+client = genai.Client(api_key=GEMINI_API_KEY) # initialise the Gemini API client with the API key from the environment variable
+
 MODEL_NAME = os.environ.get("MODEL_NAME", "gemma-4-31b-it") # default to gemma but more robust as model can now be set in env variable (not that it will change but just in case)
 
 # system instruction for the LLM, providing context and guidelines for responses
@@ -28,7 +38,7 @@ If the question is unrelated, politely say that you can only help with the graph
 """
 
 # The client gets the API key from the environment variable `GEMINI_API_KEY`.
-client = genai.Client()
+client = genai.Client(api_key=GEMINI_API_KEY)
 
 # safety settings for the LLM (reworked as they had some issues with the previous ones (spelling errors and removed violence as i checked and im pretty sure it was outdated))
 SAFETY_SETTINGS = [
