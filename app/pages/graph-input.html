@@ -56,10 +56,20 @@
                 <div class="form-group">
                     <label for="x-data">X Axis Data</label>
                     <select id="x-data">
-                        <option> Select From Dropdown</option>
-                        <option> Option 1</option>
-                        <option> Option 2</option>
-                        <option> Option 3</option>
+                        <option value="" disabled selected hidden>Select From Dropdown</option>
+                        <option value="magnitude">Magnitude</option>
+                        <option value="cdi">CDI</option>
+                        <option value="mmi">MMI</option>
+                        <option value="sig">Significance</option>
+                        <option value="nst">NST</option>
+                        <option value="dmin">DMIN</option>
+                        <option value="gap">GAP</option>
+                        <option value="depth">Depth</option>
+                        <option value="latitude">Latitude</option>
+                        <option value="longitude">Longitude</option>
+                        <option value="Year">Year</option>
+                        <option value="Month">Month</option>
+                        <option value="tsunami">Tsunami</option>
                     </select>
                 </div>
             </div>
@@ -74,10 +84,20 @@
                 <div class="form-group">
                     <label for="y-data">Y Axis Data</label>
                     <select id="y-data">
-                        <option> Select From Dropdown</option>
-                        <option> Option 1</option>
-                        <option> Option 2</option>
-                        <option> Option 3</option>
+                        <option value="" disabled selected hidden>Select From Dropdown</option>
+                        <option value="magnitude">Magnitude</option>
+                        <option value="cdi">CDI</option>
+                        <option value="mmi">MMI</option>
+                        <option value="sig">Significance</option>
+                        <option value="nst">NST</option>
+                        <option value="dmin">DMIN</option>
+                        <option value="gap">GAP</option>
+                        <option value="depth">Depth</option>
+                        <option value="latitude">Latitude</option>
+                        <option value="longitude">Longitude</option>
+                        <option value="Year">Year</option>
+                        <option value="Month">Month</option>
+                        <option value="tsunami">Tsunami</option>
                     </select>
                 </div>
             </div>
@@ -86,10 +106,21 @@
                 <div class="form-group">
                     <label for="graph-type">Graph Type</label>
                     <select id="graph-type">
-                        <option> Select From Dropdown</option>
-                        <option> Option 1</option>
-                        <option> Option 2</option>
-                        <option> Option 3</option>
+                        <option value="" disabled selected hidden>Select From Dropdown</option>
+                        <!-- Standard graphs -->
+                        <option value="scatter">Scatter Plot</option>
+                        <option value="line">Line Plot</option>
+                        <option value="bar">Bar Chart</option>
+                        <option value="histogram">Histogram</option>
+                        <option value="boxplot">Box Plot</option>
+                        <option value="heatmap">Heatmap</option>
+                        <!-- Special graphs -->
+                        <option value="quakes_per_year">Earthquakes Per Year</option>
+                        <option value="quakes_per_month">Earthquakes Per Month</option>
+                        <option value="avg_mag_per_year">Average Magnitude Per Year</option>
+                        <option value="tsunamis_per_year">Tsunamis Per Year</option>
+                        <option value="depth_distribution">Depth Distribution</option>
+                        <option value="location_map">Location Map</option>
                     </select>
                 </div>
             </div>
@@ -139,7 +170,7 @@
                     </div>
                      
                 <!-- submit button -->
-                <button class="submit-btn">Submit</button>
+                <button id="submit-btn" class="submit-btn">Submit</button>
             </section>
 
 
@@ -147,5 +178,67 @@
             <!-- <footer>
                 <p>  </p>
             </footer> -->
+
+    <script>
+    document.getElementById("submit-btn").addEventListener("click", async () => {
+
+        const payload = {
+            title: document.getElementById("title").value,
+            x_label: document.getElementById("x-label").value,
+            x_data: document.getElementById("x-data").value,
+            y_label: document.getElementById("y-label").value,
+            y_data: document.getElementById("y-data").value,
+            graph_type: document.getElementById("graph-type").value,
+            lat_low: document.getElementById("lat-low").value,
+            lat_high: document.getElementById("lat-high").value,
+            long_low: document.getElementById("long-low").value,
+            long_high: document.getElementById("long-high").value
+        };
+
+            // Require graph type
+    if (!payload.graph_type) {
+        alert("Please select a graph type.");
+        return;
+    }
+
+    // Only validate X/Y if it's NOT a special graph
+    const specialGraphs = [
+        "quakes_per_year",
+        "quakes_per_month",
+        "avg_mag_per_year",
+        "tsunamis_per_year",
+        "depth_distribution",
+        "location_map"
+    ];
+
+    if (!specialGraphs.includes(payload.graph_type)) {
+
+        if (!payload.x_data) {
+            alert("Please select an X-axis data column.");
+            return;
+        }
+
+        if (!payload.y_data) {
+            alert("Please select a Y-axis data column.");
+            return;
+        }
+    }
+
+        const response = await fetch("/graph-generate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        // Save result to localStorage so graph-output.html can read it
+        localStorage.setItem("graph_result", JSON.stringify(result));
+
+        // Redirect to output page
+        window.location.href = "/graph-output";
+    });
+    </script> 
+
     </body>
 </html>

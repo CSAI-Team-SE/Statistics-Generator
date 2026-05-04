@@ -1,6 +1,8 @@
 from pathlib import Path
-from fastapi import APIRouter
-from fastapi.responses import FileResponse
+from fastapi import APIRouter, Request
+from fastapi.responses import FileResponse, JSONResponse
+
+from app.services.graph import process_graph_request
 
 router = APIRouter()
 
@@ -20,6 +22,11 @@ async def get_home():
 async def get_graph_input():
     graph_input_html = PAGES_DIR / "graph-input.html"
     return FileResponse(graph_input_html)
+
+@router.post("/graph-generate")
+async def generate_graph(request: Request):
+    data = await request.json()
+    return JSONResponse(process_graph_request(data))
 
 # graph output (displaying the graph page)
 @router.get("/graph-output", response_class=FileResponse, summary="Graph output page")
