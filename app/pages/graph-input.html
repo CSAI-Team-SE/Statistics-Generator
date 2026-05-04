@@ -51,8 +51,6 @@
                     <label for="x-label">X Axis label</label>
                     <input type="text" id="x-label" placeholder="Enter Text Here">
             </div>
-
-
                 <div class="form-group">
                     <label for="x-data">X Axis Data</label>
                     <select id="x-data">
@@ -80,7 +78,6 @@
                     <label for="y-label">Y Axis label</label>
                     <input type="text" id="y-label" placeholder="Enter Text Here">
                 </div>
-
                 <div class="form-group">
                     <label for="y-data">Y Axis Data</label>
                     <select id="y-data">
@@ -101,7 +98,8 @@
                     </select>
                 </div>
             </div>
-                <!-- graph type below both axis rows -->
+
+            <!-- graph type below both axis rows -->
             <div class="form-row">
                 <div class="form-group">
                     <label for="graph-type">Graph Type</label>
@@ -126,7 +124,6 @@
             </div>
         </section>
 
-
         <!-- Optional filters section (latitude/longitude) -->
 
             <section class="card">
@@ -149,8 +146,6 @@
                         </div>
                      </div>
 
-
-                    
                      <!-- Longitude between -->
                     <div class="form-group">
                         <label> Longitude Between</label>
@@ -178,10 +173,11 @@
             <!-- <footer>
                 <p>  </p>
             </footer> -->
-
+    
+    <!-- Scrip for post route -->
     <script>
     document.getElementById("submit-btn").addEventListener("click", async () => {
-
+        // get graph info
         const payload = {
             title: document.getElementById("title").value,
             x_label: document.getElementById("x-label").value,
@@ -195,13 +191,13 @@
             long_high: document.getElementById("long-high").value
         };
 
-            // Require graph type
+    // Require graph type
     if (!payload.graph_type) {
         alert("Please select a graph type.");
         return;
     }
 
-    // Only validate X/Y if it's NOT a special graph
+    // Validate X/Y if it's NOT a special graph
     const specialGraphs = [
         "quakes_per_year",
         "quakes_per_month",
@@ -212,12 +208,10 @@
     ];
 
     if (!specialGraphs.includes(payload.graph_type)) {
-
         if (!payload.x_data) {
             alert("Please select an X-axis data column.");
             return;
         }
-
         if (!payload.y_data) {
             alert("Please select a Y-axis data column.");
             return;
@@ -232,10 +226,10 @@
 
         const result = await response.json();
 
-        // Save result to localStorage so graph-output.html can read it
+        // Save result so graph-output.html can read it
         localStorage.setItem("graph_result", JSON.stringify(result));
 
-        // Redirect to output page
+        // redirect to output page
         window.location.href = "/graph-output";
     });
     </script> 

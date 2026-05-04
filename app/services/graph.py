@@ -1,5 +1,6 @@
 import pandas as pd
 import io
+import os
 import base64
 import matplotlib.pyplot as plt
 from collections import Counter
@@ -9,7 +10,7 @@ import numpy as np
 # import clean dataset
 from app.services.dataset import load_cleaned
 
-# Specialised graph options
+# special graph options
 SPECIAL_GRAPHS = {
     "quakes_per_year",
     "quakes_per_month",
@@ -44,8 +45,7 @@ def compute_stats(dataset, x_data, y_data):
         "iqr_y": float(np.percentile(y_vals, 75) - np.percentile(y_vals, 25)),
     }
 
-# Decompose graph generation logic and call subprocedures inside generate()
-# Returns a base64 png image
+# plots graph, saves image as PNG to images file, and returns a base64 png image
 def generate_image(
         dataset: pd.DataFrame,
         title: str,
@@ -178,21 +178,36 @@ def generate_image(
         plt.ylabel("Latitude")
         plt.title("Earthquake Locations")
 
-    # base64 
+
+    # Convert plot to PNG, save in local
     buf = io.BytesIO()
     plt.tight_layout()
     plt.savefig(buf, format="png", dpi=300, bbox_inches="tight")
     plt.close()
     buf.seek(0)
 
+    # Save PNG to images folder with a safe title
+    images_dir = "images"
+    os.makedirs(images_dir, exist_ok=True)
+    safe_title = (title or "graph").replace(" ", "_") 
+    file_path = os.path.join(images_dir, f"{safe_title}.png")
+
+    with open(file_path, "wb") as f:
+        f.write(buf.getvalue())
+
+    # return base64 to frontend
     return base64.b64encode(buf.read()).decode("utf-8")
 
+# call subprocedures 
 def process_graph_request(data: dict):
+     # get cleaned dataset
     dataset = load_cleaned()
 
+    # check filters
     lat_range = check_filter(data.get("lat_low"), data.get("lat_high"))
     long_range = check_filter(data.get("long_low"), data.get("long_high"))
 
+    # generate the image
     img_b64 = generate_image(
         dataset=dataset,
         title=data.get("title"),
@@ -205,18 +220,16 @@ def process_graph_request(data: dict):
         long_range=long_range
     )
 
+    #  get stats
     stats = {}
     if data.get("graph_type") not in SPECIAL_GRAPHS:
         stats = compute_stats(dataset, data.get("x_data"), data.get("y_data"))
 
+    # return image and stats for output
     return {
         "image": img_b64,
         "stats": stats
     }
-
-if __name__ == "__main__":
-    dataset = load_cleaned()
-    graph = generate_image(dataset)
 
 # JavaScript image get
 # document.getElementById("graph-img").src = "data:image/png;base64," + response.image;

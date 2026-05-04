@@ -23,6 +23,7 @@ async def get_graph_input():
     graph_input_html = PAGES_DIR / "graph-input.html"
     return FileResponse(graph_input_html)
 
+# Post route to collect graph input
 @router.post("/graph-generate")
 async def generate_graph(request: Request):
     data = await request.json()
