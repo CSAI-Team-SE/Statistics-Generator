@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse
-from app.api import home
+from app.api import home, llm
 from app.core import config
 
 config.load_env()
@@ -21,3 +21,4 @@ async def root_redirect():
     return RedirectResponse(url="/home")
 
 app.include_router(home.router)
+app.include_router(llm.router)
