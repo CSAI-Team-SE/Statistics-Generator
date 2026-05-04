@@ -3,3 +3,6 @@ uvicorn
 python-dotenv
 pandas
 google-genai
+scipy
+numpy
+matplotlib
