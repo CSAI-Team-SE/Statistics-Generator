@@ -3,6 +3,10 @@ uvicorn
 python-dotenv
 pandas
 google-genai
+<<<<<<< Updated upstream
 scipy
 numpy
 matplotlib
+=======
+scipy
+>>>>>>> Stashed changes
