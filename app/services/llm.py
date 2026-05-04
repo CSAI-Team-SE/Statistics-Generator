@@ -1,76 +1,146 @@
 import os
 import re
 
+from collections.abc import AsyncIterator
 from google import genai # https://ai.google.dev/gemini-api/docs/text-generation
+from google.genai import types
+from app.core import config
 
-if not os.environ.get("GEMINI_API_KEY"):
-    from app.core import config
-    config.load_env()
+
+config.load_env()
+
+MODEL_NAME = os.environ.get("MODEL_NAME", "gemma-4-31b-it") # default to gemma but more robust as model can now be set in env variable (not that it will change but just in case)
+
+# system instruction for the LLM, providing context and guidelines for responses
+SYSTEM_INSTRUCTION = """ 
+You are a chatbot for analysing graphs related to earthquakes and tsunamis.
+
+Only answer questions that are relevant to:
+- the graph
+- the dataset
+- earthquakes
+- tsunamis
+- the statistics shown to the user
+
+Use the provided data context when answering.
+Be factual, concise, and avoid speculation.
+If the question is unrelated, politely say that you can only help with the graph or dataset.
+"""
 
 # The client gets the API key from the environment variable `GEMINI_API_KEY`.
 client = genai.Client()
 
-# new constants related to safety config
-SAFETY_SETTINGS = [ # default values are off so setting most to block medium to high chances with a few low to high
-    {"category" : "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_MEDIUM_AND_ABOVE"}, 
-    {"category" : "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_LOW_AND_ABOVE"},
-    {"category" : "HARM_CATEGORY_HARRASSMENT", "threshold": "BLOCK_LOW_AND_ABOVE"},
-    {"category" : "HARM_CATEGORY_SEXUAL_CONTENT", "threshold": "BLOCK_LOW_AND_ABOVE"},
-    {"category" : "HARM_CATEGORY_VIOLENCE", "threshold": "BLOCK_MEDIUM_AND_ABOVE"}
+# safety settings for the LLM (reworked as they had some issues with the previous ones (spelling errors and removed violence as i checked and im pretty sure it was outdated))
+SAFETY_SETTINGS = [
+    types.SafetySetting(
+        category=types.HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+        threshold=types.HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+    ),
+    types.SafetySetting(
+        category=types.HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+        threshold=types.HarmBlockThreshold.LOW_AND_ABOVE,
+    ),
+    types.SafetySetting(
+        category=types.HarmCategory.HARM_CATEGORY_HARASSMENT,
+        threshold=types.HarmBlockThreshold.LOW_AND_ABOVE,
+    ),
+    types.SafetySetting(
+        category=types.HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+        threshold=types.HarmBlockThreshold.LOW_AND_ABOVE,
+    ),
 ]
-SAFETY_THRESHOLD = 0.7
 
-def sense_check(response):
-    # checks for sensibility for depth or magnitude
-    # input: response(string, assumed)
-    # output: array of potential errors
 
+def check_prompt_format(prompt_text: str) -> list[str]: # new function to check prompt input format
+    errors = []
+
+    if not prompt_text.strip():
+        errors.append("Prompt cannot be empty.")
+    
+    if len(prompt_text) > 1000:
+        errors.append("Prompt is too long. Maximum length is 1000 characters.")
+
+    return errors
+
+
+# function to build the prompt context for the LLM, combining the current prompt with any relevant data context and previous interactions
+def build_prompt_context(prompt_text: str, data_context: str | None = None, previous_prompt: str | None = None, previous_response: str | None = None) -> str:
+    context_parts = []
+    if data_context:
+        context_parts.append("Graph and dataset context:\n" + data_context.strip())
+    
+    if previous_prompt:
+        context_parts.append("Previous user question:\n" + previous_prompt.strip())
+    
+    if previous_response:
+        context_parts.append("Previous LLM response:\n" + previous_response.strip())
+
+    context_parts.append("Current user question:\n" + prompt_text.strip())
+
+    return "\n\n".join(context_parts)
+
+# checks the LLM response for any potential errors, such as unrealistic magnitudes or depths (cleaned up variable names and added comments for clarity)
+def sense_check(response: str) -> list[str]:
     potential_errors = []
 
     # finds where magnitude (number) is mentioned
-    mags = re.findall(r"[Mm]agnitude\s*(\d+(\.\d+)?)", response)
-    for m in mags:
-        mag = float(m[0])
-        if mag< 0 or mag > 10:
-            potential_errors.append(m)
+    magnitudes = re.findall(r"[Mm]agnitude\s*(\d+(\.\d+)?)", response)
+
+
+    for m in magnitudes:
+        magnitude = float(m[0])
+
+        if magnitude < 0 or magnitude > 10:
+            potential_errors.append(f"Unusuable magnitude found: {magnitude}")
     
+    # finds where depth (number) is mentioned
     depths = re.findall(r"(\d+)\s*km\s*deep", response)
+
     for d in depths:
         depth = int(d)
-        if depth< 0 or depth > 1000: # 1000km feels excessive but a quick guess at a silly number
-            potential_errors.append(d)
+
+        if depth < 0 or depth > 1000: # 1000km feels excessive but a quick guess at a silly number
+            potential_errors.append(f"Unusuable depth found: {depth}")
 
     return potential_errors
 
+
 # Async functions keep the thread responsive by releasing it for other tasks when waiting on io bound tasks
-async def prompt(prompt_text: str) -> str:
-    print(f"Querying: \"{prompt_text}\"")
+async def stream_prompt(prompt_text: str, data_context: str | None = None, previous_prompt: str | None = None, previous_response: str | None = None) -> AsyncIterator[str]:
+    format_errors = check_prompt_format(prompt_text)
 
-    # Await tells the thread to execute the following async function and wait for it to complete before continuing here.
-    response = await client.aio.models.generate_content(
-        model="gemma-4-31b-it", 
-        config=genai.types.GenerateContentConfig(
-            system_instruction="""You are a chat bot for analysing graphs related to earthquakes and tsunamis.
-                                Only respond to relevant questions, and respond factually, avoiding speculation."""
-        ),
-        contents=prompt_text,
-        safety_settings=SAFETY_SETTINGS
-        )
-    
-    # throw away the response if above the threshold
-    if hasattr(response, "safety_ratings") and response.safety_ratings:
-        for rating in response.safety_ratings:
-            if rating.probability > SAFETY_THRESHOLD:
-                print(f"Safety Category exceeded: {rating.category}")
-                return "No Response Generated"
-            
-    potential_errors = sense_check(response.text)
 
+    if format_errors: # if there are any format errors, yield them to the user and stop the function (as the prompt is not valid)
+        yield "Prompt format errors:\n" 
+
+        for error in format_errors:
+            yield f"- {error}\n"
+
+    full_prompt = build_prompt_context(prompt_text = prompt_text, data_context = data_context, previous_prompt = previous_prompt, previous_response = previous_response)
+
+    response_stream = await client.aio.generate_content_stream( # this is the async version of the generate_content function, it returns an async generator that yields responses as they are generated by the LLM, allowing for streaming responses
+        model=MODEL_NAME,
+        contents=full_prompt,
+        config=types.GenerateContentConfig(
+            safety_settings=SAFETY_SETTINGS,
+            safety_instructions=SYSTEM_INSTRUCTION,
+            ),
+    )
+    async for response_part in response_stream:
+        response_text = response_part.text or ""
+
+        if response_text:
+            full_response = full_prompt + "\n\nLLM response:\n" + response_text
+            yield response_text
+        
+    potential_errors = sense_check(full_response)
     if potential_errors:
-        return f"{response.text} \n\n Potential errors where found in this prompt, please take mind of them: {potential_errors}"
+        yield "\n\nPotential issues with the response:\n"
 
-    # Take the text component or default if not provided.
-    return response.text or "No response generated."
+        for error in potential_errors:
+            yield f"- {error}\n"
+
+
 
 if __name__ == "__main__":
     # Executing an async function doesn't work in the same way as executing a synchronous function.
