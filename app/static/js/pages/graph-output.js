@@ -92,7 +92,7 @@ function buildDataContext() {
 function setLoadingState(isLoading) {
     if (isLoading) {
         aiSubmitButton.disabled = true;
-        aiSubmitButton.innerText = "Loading...";
+        aiSubmitButton.innerText = "Generating...";
     } else {
         aiSubmitButton.disabled = false;
         aiSubmitButton.innerText = "Submit";

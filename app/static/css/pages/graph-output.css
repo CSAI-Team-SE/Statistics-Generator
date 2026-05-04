@@ -70,6 +70,7 @@ this section places multiple form groups side by side */
     margin-bottom: 15px;
     white-space: pre-wrap;
     line-height: 1.5;
+    text-align: left;
 }
 
 #ai-submit-btn {
