@@ -68,7 +68,7 @@ this section places multiple form groups side by side */
     min-height: 120px;
     padding: 15px;
     margin-bottom: 15px;
-    white-space: pre-wra    p;
+    white-space: pre-wrap;
     line-height: 1.5;
 }
 

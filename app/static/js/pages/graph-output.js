@@ -49,10 +49,10 @@ function getStatisticsText() { // This function retrieves the text content of th
 
 }
 
-/*
-This function builds a data context string by gathering information from the saved graph results, saved graph request, and the statistics text displayed on the page. 
-It formats this information in a readable way and returns it as a single string. If no data is found, it returns a message indicating that no graph data was found.
-*/
+
+// This function builds a data context string by gathering information from the saved graph results, saved graph request, and the statistics text displayed on the page. 
+// It formats this information in a readable way and returns it as a single string. If no data is found, it returns a message indicating that no graph data was found.
+
 function buildDataContext() { 
     const graphResults = getSavedGraphResults();
     const graphRequest = getSavedGraphRequest();
@@ -85,10 +85,10 @@ function buildDataContext() {
     return dataContext;
 }
 
-/* 
-This function updates the state of the AI question form's submit button based on whether a loading state is active. 
-If isLoading is true, it disables the button and changes its text to "Loading...". If isLoading is false, it enables the button and resets its text to "Submit".  
-*/ 
+
+// This function updates the state of the AI question form's submit button based on whether a loading state is active. 
+// If isLoading is true, it disables the button and changes its text to "Loading...". If isLoading is false, it enables the button and resets its text to "Submit".  
+ 
 function setLoadingState(isLoading) {
     if (isLoading) {
         aiSubmitButton.disabled = true;
@@ -111,14 +111,14 @@ function addTextToOutput(text){ // This function appends the provided text to th
     aiOutput.textContent += text;
 }
 
-/*
-This function sends a prompt to the server by making a POST request to the "/api/llm/ask" endpoint. It includes the prompt text, data context, previous prompt, and previous response in the request body as JSON. 
-The function returns the response from the server. If there is an error during the fetch operation, it will throw an error that can be caught by the caller.
-*/
+
+// This function sends a prompt to the server by making a POST request to the "/api/prompt/stream" endpoint. It includes the prompt text, data context, previous prompt, and previous response in the request body as JSON. 
+// The function returns the response from the server. If there is an error during the fetch operation, it will throw an error that can be caught by the caller.
+
 async function sendPrompt(promptText) { 
     const dataContext = buildDataContext();
 
-    const response = await fetch("/api/llm/ask", {
+    const response = await fetch("/api/prompt/stream", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -158,10 +158,10 @@ async function readStream(response) {
 }
 
     
-/*
-This function saves the previous prompt and response to both local variables and localStorage. 
-It takes the prompt text and response text as arguments, updates the previousPrompt and previousResponse variables, and then stores them in localStorage using the defined keys.
-*/
+
+// This function saves the previous prompt and response to both local variables and localStorage. 
+// It takes the prompt text and response text as arguments, updates the previousPrompt and previousResponse variables, and then stores them in localStorage using the defined keys.
+
 function savePreviousInteraction(promptText, responseText) { 
     previousPrompt = promptText;
     previousResponse = responseText;
@@ -170,11 +170,10 @@ function savePreviousInteraction(promptText, responseText) {
     localStorage.setItem(previousResponseKey, previousResponse);
 }
 
-/*
-This event listener is attached to the AI question form's submit event. When the form is submitted, it prevents the default form submission behavior, retrieves the prompt text from the input field, and checks if it is empty. 
-If the prompt is valid, it clears the output area, sets the loading state, and sends the prompt to the server using the sendPrompt function. It then reads the streaming response using readStream and saves the previous interaction. 
-If there are any errors during this process, it logs the error and displays an error message to the user. Finally, it resets the loading state once the operation is complete.
-*/
+
+// This event listener is attached to the AI question form's submit event. When the form is submitted, it prevents the default form submission behavior, retrieves the prompt text from the input field, and checks if it is empty. 
+// If the prompt is valid, it clears the output area, sets the loading state, and sends the prompt to the server using the sendPrompt function. It then reads the streaming response using readStream and saves the previous interaction. 
+// If there are any errors during this process, it logs the error and displays an error message to the user. Finally, it resets the loading state once the operation is complete.
 
 aiQuestionForm.addEventListener("submit", async function(event) { 
     event.preventDefault();
