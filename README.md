@@ -19,23 +19,24 @@ This is a web application designed for analyzing seismic activity datasets using
 - `app/`: Main source code directory.
     - `main.py`: Entry point for the FastAPI application.
     - `api/`: Contains API route definitions using `APIRouter`.
-        - `home.py`: Serves the primary entry point (home page) at `/home`.
+        - `pages.py`: Serves the webpage endpoints.
+        - `graphs.py`: Serves graph related endpoints.
+        - `llm.py`: Serves llm generation endpoints.
     - `services/`: Contains the business logic, data processing, and AI integrations.
         - `dataset.py`: Handles data loading and cleaning logic using Pandas.
         - `graph.py`: Manages graph generation and visualization logic.
         - `llm.py`: Integrates Generative AI models using `async/await`.
     - `core/`: Application configuration and shared dependencies.
         - `config.py`: Environment configuration loader.
+    - `pages/`: Contains HTML files for each route (e.g., `home.html`).
     - `static/`: Contains static assets (CSS, JS, images).
         - `css/`:
             - `base.css`: Standard base styles, variables, and resets.
-            - `pages/`: Page-specific CSS files (e.g., `home.css`).
+            - `pages/*.css`: Page-specific CSS files (e.g., `home.css`).
         - `js/`:
-            - `modules/`: Shared logic and helper functions (ES Modules).
-            - `pages/`: Page-specific entry points (e.g., `home.js`).
-    - `pages/`: Contains HTML files for each route (e.g., `home.html`).
-- `data/`: Contains datasets.
-    - `earthquake_data_tsunami.csv`: [Global Earthquake & Tsunami Risk Assessment Dataset](https://www.kaggle.com/datasets/ahmeduzaki/global-earthquake-tsunami-risk-assessment-dataset)
+            - `pages/*.js`: Page-specific entry points (e.g., `home.js`).
+        - `data/`: Contains datasets.
+            - `earthquake_data_tsunami.csv`: [Global Earthquake & Tsunami Risk Assessment Dataset](https://www.kaggle.com/datasets/ahmeduzaki/global-earthquake-tsunami-risk-assessment-dataset)
 
 ## Getting Started
 
