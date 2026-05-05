@@ -4,7 +4,7 @@ from pathlib import Path
 # Get the path to the data directory
 # app/services/dataset.py -> app/services -> app -> project_root
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
-DATASET_PATH = BASE_DIR / "data" / "earthquake_data_tsunami.csv"
+DATASET_PATH = BASE_DIR / "app" / "static" / "data" / "earthquake_data_tsunami.csv"
 
 # Load dataset
 def load() -> pd.DataFrame:
