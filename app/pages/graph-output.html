@@ -66,7 +66,7 @@
         <div id="ai-output" class="analysis-text ai-output" aria-live="polite">Ask a question about the graph to get insights from the AI! (e.g. "What does this graph tell me?")</div>
 
         <form id="ai-question-form" class="form-group">
-            <label for="question">Further Questions:</label>
+            <label for="question">Ask a question:</label>
             <input type="text" id="question" placeholder="Enter question">
             <button type="submit" id="ai-submit-btn" class="submit-btn">Submit</button>
         </form>
@@ -77,27 +77,7 @@
 <footer>
 </footer>
 
-<script>window.addEventListener("DOMContentLoaded", () => {
-    const saved = localStorage.getItem("graph_result");
-    if (!saved) return;
-
-    const result = JSON.parse(saved);
-
-    // Display graph
-    document.getElementById("graph-img").src =
-        "data:image/png;base64," + result.image;
-
-    // Display stats (if present)
-    if (result.stats) {
-        document.getElementById("mean-x").textContent = result.stats.mean_x ?? "N/A";
-        document.getElementById("mean-y").textContent = result.stats.mean_y ?? "N/A";
-        document.getElementById("range-x").textContent = result.stats.range_x ?? "N/A";
-        document.getElementById("range-y").textContent = result.stats.range_y ?? "N/A";
-        document.getElementById("p-value").textContent = result.stats.p_value ?? "N/A";
-        document.getElementById("iqr-x").textContent = result.stats.iqr_x ?? "N/A";
-        document.getElementById("iqr-y").textContent = result.stats.iqr_y ?? "N/A";
-    }
-});
+<script>
 </script>
 
 <!-- This script will handle the AI question form submission separately and display the response -->

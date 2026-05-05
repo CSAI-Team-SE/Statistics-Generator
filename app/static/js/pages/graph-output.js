@@ -213,4 +213,24 @@ aiQuestionForm.addEventListener("submit", async function(event) {
     }
 });
 
+window.addEventListener("DOMContentLoaded", () => {
+    const saved = localStorage.getItem("graph_result");
+    if (!saved) return;
 
+    const result = JSON.parse(saved);
+
+    // Display graph
+    document.getElementById("graph-img").src =
+        "data:image/png;base64," + result.image;
+
+    // Display stats (if present)
+    if (result.stats) {
+        document.getElementById("mean-x").textContent = result.stats.mean_x ?? "N/A";
+        document.getElementById("mean-y").textContent = result.stats.mean_y ?? "N/A";
+        document.getElementById("range-x").textContent = result.stats.range_x ?? "N/A";
+        document.getElementById("range-y").textContent = result.stats.range_y ?? "N/A";
+        document.getElementById("p-value").textContent = result.stats.p_value ?? "N/A";
+        document.getElementById("iqr-x").textContent = result.stats.iqr_x ?? "N/A";
+        document.getElementById("iqr-y").textContent = result.stats.iqr_y ?? "N/A";
+    }
+});
