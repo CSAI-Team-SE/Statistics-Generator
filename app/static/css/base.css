@@ -4,32 +4,55 @@
 
     /* secondary color changes background color */
     --secondary-color: rgba(4, 35, 92, 0.445);
+
+    --header-height: 70px;
+    --content-gap: 40px;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
 }
 
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 0;
+    padding-top: var(--header-height);
     background-color: var(--secondary-color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 /* Header Styles for all of the webpages. */
 header {
     background-color: var(--primary-color);
     color: white;
-    padding: 1.5rem 2rem;
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+    padding: 0 2rem;
     font: bold 1rem Arial, sans-serif;
-    }
-    
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
 header h1 {
     font-size: 2rem;
+    margin: 0;
 }
 
 /* Nav Styles */
 nav {
     display: flex;
     justify-content: space-between;
-    gap: 1.5rem;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 /* This is for the navigation links (home, make a graph, help) */
 nav a {
@@ -43,11 +66,6 @@ nav a {
 nav a:hover {
     background-color: #34495e;
 }
-
-nav {
-    gap: 1rem;
-}
-
 
 /* this is the left side of the nav bar */
 .nav-left {
@@ -76,11 +94,33 @@ footer {
     background-color: var(--primary-color);
     color: white;
     text-align: center;
-    padding: 1rem;
-    position: fixed;
-    bottom: 0;
+    padding: 2rem;
     width: 100%;
-
+    margin-top: auto;
 }
+
+/* Shared Layout Components */
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: var(--content-gap) 20px;
+    width: 100%;
+}
+
+.card {
+    background-color: white;
+    padding: 25px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card:last-child {
+    margin-bottom: 0;
+}
+
+
+
+
 
 

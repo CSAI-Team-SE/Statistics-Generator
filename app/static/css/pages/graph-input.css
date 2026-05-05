@@ -1,22 +1,5 @@
 /* Make a Graph/ Prompt page */
 
-.container {
-    max-width: 900px;
-    margin: 30px auto;
-    padding-bottom: 80px
-}
-
-
-/*  card section (the white boxes used for the form areas) */
-
-.card {
-    background-color: white;
-    padding: 20px 25px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
 /* form group label and input stacked vertically */
 .form-group {
     margin-bottom: 15px;
@@ -50,15 +33,22 @@ this section places multiple form groups side by side */
 
 /* submit button */
 .submit-btn {
-    padding: 10px 20px;
+    padding: 12px 20px;
     color: white;   
     border: none;
-    background-color: #04235c;
-    border-radius: 4px;
+    background-color: var(--primary-color);
+    border-radius: 8px; /* Matching card border radius */
     cursor:pointer;
     font-size: 16px;
+    width: 100%; /* Full width */
 }
 
 .submit-btn:hover {
     background-color: #34495e;
+}
+
+/* dedicated submit section at bottom of page */
+.submit-section {
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
