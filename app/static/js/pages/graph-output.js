@@ -3,11 +3,8 @@ const questionInput = document.getElementById("question");
 const aiOutput= document.getElementById("ai-output");
 const aiSubmitButton = document.getElementById("ai-submit-btn");
 
-const previousPromptKey = "graphOutputPreviousPrompt";
-const previousResponseKey = "graphOutputPreviousResponse";
-
-let previousPrompt = localStorage.getItem(previousPromptKey) || ""; // Initialise previousPrompt from localStorage or set to empty string if not found
-let previousResponse = localStorage.getItem(previousResponseKey) || ""; // Initialise previousResponse from localStorage or set to empty string if not found
+const conversationHistoryKey = "conversationHistory";
+let conversationHistory = JSON.parse(localStorage.getItem(conversationHistoryKey)) || []; // Initialise conversationHistory from localStorage or set to empty array if not found
 
 function getSavedGraphResults() { // This function retrieves the saved graph results from localStorage and parses it as JSON. If there is an error during parsing, it logs the error and returns null.
     const savedGraphResults = localStorage.getItem("graph_result");
@@ -132,8 +129,7 @@ async function sendPrompt(promptText) {
         body: JSON.stringify({
             prompt: promptText,
             data_context: dataContext,
-            previous_prompt: previousPrompt,
-            previous_response: previousResponse,
+            history: conversationHistory,
         }),
     });
 
@@ -166,14 +162,13 @@ async function readStream(response) {
     
 
 // This function saves the previous prompt and response to both local variables and localStorage. 
-// It takes the prompt text and response text as arguments, updates the previousPrompt and previousResponse variables, and then stores them in localStorage using the defined keys.
+// It takes the prompt text and response text as arguments, updates the conversationHistory variable, and then stores it in localStorage using the defined key.
 
 function savePreviousInteraction(promptText, responseText) { 
-    previousPrompt = promptText;
-    previousResponse = responseText;
+    conversationHistory.push({ role: "user", content: promptText });
+    conversationHistory.push({ role: "model", content: responseText });
 
-    localStorage.setItem(previousPromptKey, previousPrompt);
-    localStorage.setItem(previousResponseKey, previousResponse);
+    localStorage.setItem(conversationHistoryKey, JSON.stringify(conversationHistory));
 }
 
 

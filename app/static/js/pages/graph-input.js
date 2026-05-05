@@ -49,6 +49,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
         const result = await response.json();
 
+        // Reset the AI conversation history when a new graph is generated
+        localStorage.removeItem("conversationHistory");
+
         // Save the request so we can show it on the output page for context
         localStorage.setItem("graph_request", JSON.stringify(payload));
 
