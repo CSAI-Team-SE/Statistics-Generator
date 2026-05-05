@@ -19,7 +19,7 @@ if not GEMINI_API_KEY: # if the API key is not set in the environment variable, 
 
 client = genai.Client(api_key=GEMINI_API_KEY) # initialise the Gemini API client with the API key from the environment variable
 
-MODEL_NAME = os.environ.get("MODEL_NAME", "gemma-4-31b-it") # default to gemma but more robust as model can now be set in env variable (not that it will change but just in case)
+MODEL_NAME = os.environ.get("GEMINI_MODEL", "gemma-4-31b-it") # default to gemma but more robust as model can now be set in env variable (not that it will change but just in case)
 
 # system instruction for the LLM, providing context and guidelines for responses
 SYSTEM_INSTRUCTION = """ 
@@ -49,8 +49,6 @@ Formatting rules:
 If the question is unrelated, politely say that you can only help with the graph or dataset.
 """
 
-# The client gets the API key from the environment variable `GEMINI_API_KEY`.
-client = genai.Client(api_key=GEMINI_API_KEY)
 
 # safety settings for the LLM (reworked as they had some issues with the previous ones (spelling errors and removed violence as i checked and im pretty sure it was outdated))
 SAFETY_SETTINGS = [
@@ -113,7 +111,7 @@ def sense_check(response: str) -> List[str]:
         magnitude = float(m[0])
 
         if magnitude < 0 or magnitude > 10:
-            potential_errors.append(f"Unusuable magnitude found: {magnitude}")
+            potential_errors.append(f"Unusual magnitude found: {magnitude}")
     
     # finds where depth (number) is mentioned
     depths = re.findall(r"(\d+)\s*km\s*deep", response)
@@ -122,7 +120,7 @@ def sense_check(response: str) -> List[str]:
         depth = int(d)
 
         if depth < 0 or depth > 1000: # 1000km feels excessive but a quick guess at a silly number
-            potential_errors.append(f"Unusuable depth found: {depth}")
+            potential_errors.append(f"Unusual depth found: {depth}")
 
     return potential_errors
 
