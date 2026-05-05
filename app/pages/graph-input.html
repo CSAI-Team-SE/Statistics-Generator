@@ -226,6 +226,9 @@
 
         const result = await response.json();
 
+        // Save the request so we can show it on the output page for context
+        localStorage.setItem("graph_request", JSON.stringify(payload));
+
         // Save result so graph-output.html can read it
         localStorage.setItem("graph_result", JSON.stringify(result));
 

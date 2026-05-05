@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landing Page</title>
+    <title>Graph Output</title>
     <link rel="stylesheet" href="../static/css/base.css">
     <link rel="stylesheet" href="../static/css/pages/graph-output.css">
 </head>
@@ -43,7 +43,7 @@
 
     <!-- Statistics card  -->
 
-    <section class="card">
+    <section class="card" id="statistics-section">
         <h2>Statistics</h2>
 
 <!-- VARIABLE VALUES (template) -->
@@ -63,17 +63,14 @@
     <section class="card">
         <h2>AI Analysis</h2>
 
+        <div id="ai-output" class="analysis-text ai-output" aria-live="polite">Ask a question about the graph to get insights from the AI! (e.g. "What does this graph tell me?")</div>
 
-        <!-- placeholder for the text that will have the real ai generated analysis. -->
-        <p class="analysis-text">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas, neque?</p>
-        </p>
-
-        <div class="form-group">
-            <label for="question">Further Questions</label>
+        <form id="ai-question-form" class="form-group">
+            <label for="question">Further Questions:</label>
             <input type="text" id="question" placeholder="Enter question">
-            <button class="submit-btn">Submit</button>
-        </div>
+            <button type="submit" id="ai-submit-btn" class="submit-btn">Submit</button>
+        </form>
+        
     </section>
 </main>
 <script>
@@ -99,5 +96,8 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 });
 </script>
+
+<!-- This script will handle the AI question form submission separately and display the response -->
+<script src="../static/js/pages/graph-output.js"></script>
 </body>
 </html>
