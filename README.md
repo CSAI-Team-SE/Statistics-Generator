@@ -4,7 +4,7 @@ AI Powered Seismic Activity Dataset Analysis.
 
 ## Project Overview
 
-This is a web application designed for analyzing seismic activity datasets using Generative AI.
+This is a web application designed for analysing a seismic activity dataset using Generative AI.
 
 ### Core Technologies
 - **Framework:** [FastAPI](https://fastapi.tiangolo.com/)
@@ -24,7 +24,7 @@ This is a web application designed for analyzing seismic activity datasets using
         - `llm.py`: Serves llm generation endpoints.
     - `services/`: Contains the business logic, data processing, and AI integrations.
         - `dataset.py`: Handles data loading and cleaning logic using Pandas.
-        - `graph.py`: Manages graph generation and visualization logic.
+        - `graph.py`: Manages graph generation and visualisation logic.
         - `llm.py`: Integrates Generative AI models using `async/await`.
     - `core/`: Application configuration and shared dependencies.
         - `config.py`: Environment configuration loader.
@@ -43,24 +43,28 @@ This is a web application designed for analyzing seismic activity datasets using
 ### Prerequisites
 - Python 3.8+
 - Virtual environment (recommended)
-- `GEMINI_API_KEY` environment variable.
+- `GEMINI_API_KEY` environment variable in a .env file (example .env file is included)
 
 ### Installation
 1.  **Clone the repository.**
 2.  **Create and activate a virtual environment:**
-    ```bash
-    python -m venv venv
-    .\venv\Scripts\activate  # On Windows
+    ```
+    python -m venv .venv
+    .\.venv\Scripts\activate  # On Windows
     source venv/bin/activate  # On Unix/macOS
     ```
 3.  **Install dependencies:**
-    ```bash
+    ```
     pip install -r requirements.txt
     ```
+4. **Accessing API:**
+   -  Copy existing API key into .env file.
+   - Create your own API key by logging into google ai studio using a google account and add new API key into .env file:
+     https://aistudio.google.com/app/api-keys
 
 ### Running the Application
 To start the development server with auto-reload enabled:
-```bash
+```
 uvicorn app.main:app --reload
 ```
 The application will be accessible at `http://127.0.0.1:8000`. You can access the generated endpoint documentation at `http://127.0.0.1:8000/docs`.
@@ -70,12 +74,12 @@ The application will be accessible at `http://127.0.0.1:8000`. You can access th
 - **Path Handling:** Use `pathlib.Path` for all file and directory path operations to ensure cross-platform compatibility.
 - **API Routes:** All routes should be defined in `app/api/` using `APIRouter` and included in `app/main.py`.
 - **Logic Separation:** Business logic and data processing should reside in the `app/services/` directory.
-- **Data Handling:** Use the `data/` directory for all dataset files. Load data using the helper functions in `app/services/dataset.py`.
+- **Data Handling:** Use the `app/static/data/` directory for all dataset files. Load data using the helper functions in `app/services/dataset.py`.
 - **Frontend Assets:**
-    - Page-specific logic should live in `static/js/pages/`.
-    - Shared logic should live in `static/js/modules/`.
-    - Page-specific styles should live in `static/css/pages/`.
-    - Base styles and variables should live in `static/css/base.css`.
+    - Page-specific logic should live in `app/static/js/pages/`.
+    - Shared logic should live in `app/static/js/modules/`.
+    - Page-specific styles should live in `app/static/css/pages/`.
+    - Base styles and variables should live in `app/static/css/base.css`.
 - **HTML Layout:** HTML files for each page should reside in the `app/pages/` directory.
 - **Environment Variables:** Configuration should be managed through `app/core/config.py` using `load_env()`.
 - **AI Integration:** Use `app/services/llm.py` for AI logic. All LLM calls should be asynchronous.
