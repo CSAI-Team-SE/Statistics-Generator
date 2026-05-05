@@ -78,6 +78,12 @@ function buildDataContext() {
         dataContext += "\n\n";
     }
 
+    if (graphResults !== null && graphResults.columns) {
+        dataContext += "Columns:\n";
+        dataContext += JSON.stringify(graphResults.columns, null, 2);
+        dataContext += "\n\n";
+    }
+
     if (dataContext === "") {
         dataContext = "No graph data was found in the page or local storage.";
     }
