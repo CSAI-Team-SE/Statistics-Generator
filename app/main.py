@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse
-from app.api import home, llm
+from app.api import pages, llm, graphs
 from app.core import config
 
 config.load_env()
@@ -20,5 +20,6 @@ app.mount("/static", StaticFiles(directory="app/static"), name="static")
 async def root_redirect():
     return RedirectResponse(url="/home")
 
-app.include_router(home.router)
+app.include_router(pages.router)
 app.include_router(llm.router)
+app.include_router(graphs.router)

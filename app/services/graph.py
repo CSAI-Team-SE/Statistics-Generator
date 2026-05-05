@@ -196,9 +196,9 @@ def generate_image(
         f.write(buf.getvalue())
 
     # return base64 to frontend
-    return base64.b64encode(buf.read()).decode("utf-8")
+    return base64.b64encode(buf.getvalue()).decode("utf-8")
 
-# call subprocedures 
+# call subprocedures
 def process_graph_request(data: dict):
      # get cleaned dataset
     dataset = load_cleaned()
@@ -220,15 +220,43 @@ def process_graph_request(data: dict):
         long_range=long_range
     )
 
+    # Apply the same filters to the dataset for statistics and AI context
+    if lat_range:
+        low, high = lat_range
+        dataset = dataset[(dataset["latitude"] >= low) & (dataset["latitude"] <= high)]
+    if long_range:
+        low, high = long_range
+        dataset = dataset[(dataset["longitude"] >= low) & (dataset["longitude"] <= high)]
+
+    # Identify the specific columns for this request
+    graph_type = data.get("graph_type")
+    cols = [data.get("x_data"), data.get("y_data")]
+
+    # Mapping for all special graph types to their underlying columns
+    special_mapping = {
+        "quakes_per_year": ["Year"],
+        "quakes_per_month": ["Month"],
+        "avg_mag_per_year": ["Year", "magnitude"],
+        "tsunamis_per_year": ["Year", "tsunami"],
+        "depth_distribution": ["depth"],
+        "location_map": ["longitude", "latitude"]
+    }
+
+    if graph_type in special_mapping:
+        cols = special_mapping[graph_type]
+
     #  get stats
     stats = {}
     if data.get("graph_type") not in SPECIAL_GRAPHS:
         stats = compute_stats(dataset, data.get("x_data"), data.get("y_data"))
 
-    # return image and stats for output
+    columns = [c for c in cols if c]
+
+    # return image, stats, and used columns with their values for output
     return {
         "image": img_b64,
-        "stats": stats
+        "stats": stats,
+        "columns": dataset[columns].to_dict(orient="list")
     }
 
 # JavaScript image get
