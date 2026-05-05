@@ -4,7 +4,7 @@ AI Powered Seismic Activity Dataset Analysis.
 
 ## Project Overview
 
-This is a web application designed for analyzing seismic activity datasets using Generative AI.
+This is a web application designed for analysing seismic activity datasets using Generative AI.
 
 ### Core Technologies
 - **Framework:** [FastAPI](https://fastapi.tiangolo.com/)
@@ -43,7 +43,7 @@ This is a web application designed for analyzing seismic activity datasets using
 ### Prerequisites
 - Python 3.8+
 - Virtual environment (recommended)
-- `GEMINI_API_KEY` environment variable.
+- `GEMINI_API_KEY` environment variable in a .env file (example .env file is included)
 
 ### Installation
 1.  **Clone the repository.**
@@ -57,6 +57,10 @@ This is a web application designed for analyzing seismic activity datasets using
     ```bash
     pip install -r requirements.txt
     ```
+4. **Accessing API:**
+   -  Copy existing API key into .env file.
+   - Create your own API key by logging into google ai studio using a google account and add new API key into .env file:
+     https://aistudio.google.com/app/api-keys
 
 ### Running the Application
 To start the development server with auto-reload enabled:
